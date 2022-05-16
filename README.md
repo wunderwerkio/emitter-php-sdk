@@ -26,7 +26,7 @@ This PHP SDK implements the following methods as described in the [emitter docs]
 ### Connect to emitter server
 
 ```php
-use Wunderwerkio\EmitterSDK\Emitter;
+use Wunderwerk\EmitterSDK\Emitter;
 
 // Create Emitter instance.
 $emitter = new Emitter();
@@ -72,7 +72,7 @@ This loop method is blocking, but can be released by calling the `interrupt()` m
 To avoid a deadlock, make sure you structure your code so that the `interrupt()` method is called once the desired messages are received.
 
 ```php
-use Wunderwerkio\EmitterSDK\EmitterInterface;
+use Wunderwerk\EmitterSDK\EmitterInterface;
 
 // Listen for incoming messages.
 // Note: Multiple handlers can be assigned!
@@ -99,7 +99,7 @@ The internal event loop supports calling custom handlers on each loop cycle.
 This can be used to implement timeouts for example to interrupt the event loop if no messages are received in 10 seconds.
 
 ```php
-use Wunderwerkio\EmitterSDK\EmitterInterface;
+use Wunderwerk\EmitterSDK\EmitterInterface;
 
 $handler = function (EmitterInstance $emitter, float $elapsedTime): void {
   printf('Loop running for %d seconds', $elapsedTime);
