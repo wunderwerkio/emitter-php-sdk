@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wunderwerk\PhpEmitter;
+namespace Wunderwerk\EmitterSDK;
 
 use PhpMqtt\Client\ConnectionSettings;
 use PhpMqtt\Client\MqttClient;

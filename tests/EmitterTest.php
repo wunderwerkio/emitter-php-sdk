@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Wunderwerk\PhpEmitter;
+namespace Tests\Wunderwerk\EmitterSDK;
 
 use PHPUnit\Framework\TestCase;
-use Wunderwerk\PhpEmitter\Emitter;
+use Wunderwerk\EmitterSDK\Emitter;
 
 /**
  * Test Emitter class.

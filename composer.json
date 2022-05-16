@@ -1,12 +1,12 @@
 {
-    "name": "wunderwerkio/php-emitter",
+    "name": "wunderwerkio/emitter-sdk",
     "description": "PHP SDK for the emitter event broker",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Wunderwerk\\PhpEmitter\\": "src/",
-            "Tests\\Wunderwerk\\PhpEmitter\\": "tests/"
+            "Wunderwerk\\EmitterSDK\\": "src/",
+            "Tests\\Wunderwerk\\EmitterSDK\\": "tests/"
         }
     },
     "scripts": {

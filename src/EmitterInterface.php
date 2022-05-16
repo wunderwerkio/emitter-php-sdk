@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wunderwerk\PhpEmitter;
+namespace Wunderwerk\EmitterSDK;
 
 /**
  * Interface describing the methods of an Emitter.
@@ -251,8 +251,8 @@ interface EmitterInterface {
 
   /**
    * Request information about the connection to the server.
-   * 
-   * @return self 
+   *
+   * @return self
    *   The instance.
    */
   public function me(): self;

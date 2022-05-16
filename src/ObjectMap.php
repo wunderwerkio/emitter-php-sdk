@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Wunderwerk\PhpEmitter;
+namespace Wunderwerk\EmitterSDK;
 
 /**
  * Maps one object to another.
