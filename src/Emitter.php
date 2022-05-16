@@ -22,7 +22,7 @@ class Emitter implements EmitterInterface {
    */
   private ObjectMap $handlerMap;
 
-  /** 
+  /**
    * Construct new Emitter object.
    */
   public function __construct() {
@@ -65,7 +65,7 @@ class Emitter implements EmitterInterface {
    * {@inheritdoc}
    */
   public function addMessageHandler(\Closure $handler): self {
-    $wrappedHandler = function($client, string $topic, string $message) use ($handler) {
+    $wrappedHandler = function ($client, string $topic, string $message) use ($handler): void {
       $handler($this, $topic, $message);
     };
 
@@ -79,7 +79,7 @@ class Emitter implements EmitterInterface {
    * {@inheritdoc}
    */
   public function addLoopHandler(\Closure $handler): self {
-    $wrappedHandler = function($client, int $elapsedTime) use ($handler) {
+    $wrappedHandler = function ($client, float $elapsedTime) use ($handler): void {
       $handler($this, $elapsedTime);
     };
 
@@ -100,6 +100,9 @@ class Emitter implements EmitterInterface {
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function removeLoopHandler(\Closure $handler): self {
     $wrappedHandler = $this->handlerMap->get($handler);
 
@@ -122,19 +125,20 @@ class Emitter implements EmitterInterface {
    */
   public function interrupt(): self {
     $this->client->interrupt();
-    
+
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function publish(string $key, string $channel, array|string $message, ?int $ttl = NULL, ?bool $me = NULL): self {
+  public function publish(string $key, string $channel, string $message, ?int $ttl = NULL, ?bool $me = NULL): self {
     $options = [];
 
     if (is_null($me) || $me === TRUE) {
       $options['me'] = '1';
-    } else {
+    }
+    else {
       $options['me'] = '0';
     }
 
@@ -179,7 +183,7 @@ class Emitter implements EmitterInterface {
   /**
    * {@inheritdoc}
    */
-  public function publishWithLink(string $link, array|string $message): self {
+  public function publishWithLink(string $link, string $message): self {
     $this->client->publish($link, $message);
 
     return $this;
@@ -193,7 +197,8 @@ class Emitter implements EmitterInterface {
 
     if (is_null($me) || $me === TRUE) {
       $options['me'] = '1';
-    } else {
+    }
+    else {
       $options['me'] = '0';
     }
 
@@ -228,10 +233,10 @@ class Emitter implements EmitterInterface {
     ];
 
     /** @var array $msg */
-    $msg;
+    $msg = [];
 
     // Handle keygen response.
-    $handler = function(MqttClient $client, $topic, $message) use (&$msg) {
+    $handler = function (MqttClient $client, $topic, $message) use (&$msg): void {
       $msg = json_decode($message, TRUE);
       $client->interrupt();
     };
@@ -271,31 +276,31 @@ class Emitter implements EmitterInterface {
 
   /**
    * Creates formatted channel string for emitter.
-   * 
-   * @param string $key 
+   *
+   * @param string $key
    *   The key.
-   * @param string $channel 
+   * @param string $channel
    *   The channel.
-   * @param array $options 
+   * @param array $options
    *   The options.
-   * 
-   * @return string 
+   *
+   * @return string
    *   The formatted channel string.
    */
   protected function formatChannel(string $key, string $channel, array $options = []): string {
-    // Prefix the key if any
+    // Prefix the key if any.
     $formatted = $key;
 
     if (strlen($key) > 0) {
       $formatted = str_ends_with($key, '/') ? $key . $channel : $key . '/' . $channel;
     }
 
-    // Add trailing slash
+    // Add trailing slash.
     if (!str_ends_with($formatted, '/')) {
       $formatted .= '/';
     }
 
-    // Add options
+    // Add options.
     if (count($options) > 0) {
       $formatted .= '?';
 

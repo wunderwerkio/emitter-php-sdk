@@ -8,7 +8,7 @@ namespace Wunderwerk\PhpEmitter;
  * Maps one object to another.
  */
 class ObjectMap {
-  
+
   /**
    * Array that contains the hash of $key and $object as value.
    */
@@ -16,10 +16,10 @@ class ObjectMap {
 
   /**
    * Add an object $object keyed by $key.
-   * 
-   * @param object $key 
+   *
+   * @param object $key
    *   The object to use as key.
-   * @param object $subject 
+   * @param object $subject
    *   The object to use as value.
    */
   public function add(object $key, object $subject): void {
@@ -28,11 +28,11 @@ class ObjectMap {
 
   /**
    * Get object by $key.
-   * 
-   * @param object $key 
+   *
+   * @param object $key
    *   The object to use as key.
-   * 
-   * @return object 
+   *
+   * @return object
    *   The object that is mapped to $key.
    */
   public function get(object $key): object {
@@ -41,11 +41,11 @@ class ObjectMap {
 
   /**
    * Check if $key is mapped to an object.
-   * 
-   * @param object $key 
+   *
+   * @param object $key
    *   The object to use as key.
-   * 
-   * @return bool 
+   *
+   * @return bool
    *   TRUE if $key is mapped to an object, FALSE otherwise.
    */
   public function has(object $key): bool {
@@ -54,15 +54,15 @@ class ObjectMap {
 
   /**
    * Remove object by $key.
-   * 
-   * @param object $key 
+   *
+   * @param object $key
    *   The object to use as key.
    */
   public function remove(object $key): void {
     unset($this->objectHashMap[spl_object_hash($key)]);
   }
 
-  /** 
+  /**
    * Clear the map.
    */
   public function clear(): void {
@@ -71,8 +71,8 @@ class ObjectMap {
 
   /**
    * Get the number of objects in the map.
-   * 
-   * @return int 
+   *
+   * @return int
    *   The number of objects in the map.
    */
   public function count(): int {
