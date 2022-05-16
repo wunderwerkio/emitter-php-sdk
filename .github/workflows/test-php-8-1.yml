@@ -1,0 +1,50 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      emitter:
+        image: emitter/server:v3.0
+        env:
+          EMITTER_LICENSE: POwgWDVuaLR56pLgGvba2ySq0rzPARzNJW1MhsfKtu1HIzgQjD16udVj9nuLgQALfvpsmtSHme8L-POJEAE:3
+        ports:
+          - 8080:8080
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP 
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+
+    - name: Run test suite
+      run: composer run-script test
+      env:
+        EMITTER_HOST: localhost
