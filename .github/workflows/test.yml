@@ -12,33 +12,17 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: php:8.0-cli
 
     services:
       emitter:
         image: emitter/server:v3.0
         env:
           EMITTER_LICENSE: POwgWDVuaLR56pLgGvba2ySq0rzPARzNJW1MhsfKtu1HIzgQjD16udVj9nuLgQALfvpsmtSHme8L-POJEAE:3
+        ports:
+          - 8080:8080
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Install composer
-      run: |
-        cd /tmp \
-        && EXPECTED_CHECKSUM="$(curl -L "https://composer.github.io/installer.sig")" \
-        && curl -L "https://getcomposer.org/installer" -o composer-setup.php \
-        && ACTUAL_CHECKSUM="$(php -r "echo hash_file('sha384', 'composer-setup.php');")" \
-        && if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then \
-          >&2 echo 'ERROR: Invalid installer checksum'; \
-          rm composer-setup.php; \
-          exit 1; \
-        fi \
-        && php composer-setup.php --quiet \
-        && RESULT=$? \
-        && rm composer-setup.php \
-        && mv /tmp/composer.phar /usr/local/bin/composer \
-        && exit $RESULT
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
