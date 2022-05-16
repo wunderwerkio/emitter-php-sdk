@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - vendor:/app/vendor
+    working_dir: /app
+    command: '/bin/bash -c "trap : TERM INT; sleep infinity & wait"'
+    environment:
+      EMITTER_HOST: emitter
+    links:
+      - emitter
+
+  emitter:
+    image: emitter/server:v3.0
+    environment:
+      EMITTER_LICENSE: POwgWDVuaLR56pLgGvba2ySq0rzPARzNJW1MhsfKtu1HIzgQjD16udVj9nuLgQALfvpsmtSHme8L-POJEAE:3
+    ports:
+      - '8080:8080'
+  
+volumes:
+  vendor:

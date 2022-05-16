@@ -311,7 +311,7 @@ class EmitterTest extends TestCase {
    *   The emitter host.
    */
   protected function getEmitterHost(): string {
-    return getenv('EMITTER_HOST');
+    return getenv('EMITTER_HOST') ?: '';
   }
 
 }
