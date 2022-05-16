@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        PHP_VERSION: '8.0'
     volumes:
       - .:/app
       - vendor:/app/vendor
