@@ -275,6 +275,15 @@ class Emitter implements EmitterInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function me(): self {
+    $this->client->publish('emitter/me/', '');
+
+    return $this;
+  }
+
+  /**
    * Creates formatted channel string for emitter.
    *
    * @param string $key

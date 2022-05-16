@@ -249,4 +249,12 @@ interface EmitterInterface {
    */
   public function presence(string $key, string $channel, ?bool $status = NULL, ?bool $changes = NULL): self;
 
+  /**
+   * Request information about the connection to the server.
+   * 
+   * @return self 
+   *   The instance.
+   */
+  public function me(): self;
+
 }
