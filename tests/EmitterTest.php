@@ -7,6 +7,9 @@ namespace Tests\Wunderwerk\PhpEmitter;
 use PHPUnit\Framework\TestCase;
 use Wunderwerk\PhpEmitter\Emitter;
 
+/**
+ * Test Emitter class.
+ */
 class EmitterTest extends TestCase {
 
   const MASTER_KEY = 'H8Sot3N0XPrRptJJr7QeJAK3bqdAaOzS';
@@ -15,7 +18,7 @@ class EmitterTest extends TestCase {
    * @covers ::connect
    * @covers ::isConnected
    */
-  public function testConnection() {
+  public function testConnection(): void {
     $emitter = $this->connect();
 
     $this->assertTrue($emitter->isConnected());
@@ -25,7 +28,7 @@ class EmitterTest extends TestCase {
    * @covers ::connect
    * @covers ::isConnected
    */
-  public function testInvalidConnection() {
+  public function testInvalidConnection(): void {
     $emitter = new Emitter();
 
     $this->expectException(\Exception::class);
@@ -36,7 +39,7 @@ class EmitterTest extends TestCase {
    * @covers ::disconnect
    * @covers ::isConnected
    */
-  public function testDisconnection() {
+  public function testDisconnection(): void {
     $emitter = $this->connect();
 
     $emitter->disconnect();
@@ -47,7 +50,7 @@ class EmitterTest extends TestCase {
   /**
    * @covers ::keygen
    */
-  public function testKeygen() {
+  public function testKeygen(): void {
     $emitter = $this->connect();
 
     $key = $emitter->keygen(self::MASTER_KEY, 'article1/', 'rw', 10);
@@ -62,7 +65,7 @@ class EmitterTest extends TestCase {
    * @covers ::publish
    * @covers ::loop
    */
-  public function testSubscribe() {
+  public function testSubscribe(): void {
     $emitter = $this->connect();
     $channel = "article1/";
     $key = $emitter->keygen(self::MASTER_KEY, $channel, 'rw', 10);
@@ -71,7 +74,7 @@ class EmitterTest extends TestCase {
     $receivedMessage = "";
     $receivedTopic = "";
 
-    $emitter->addMessageHandler(function($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic) {
+    $emitter->addMessageHandler(function ($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic): void {
       $receivedMessage = $message;
       $receivedTopic = $topic;
       $emitter->interrupt();
@@ -91,7 +94,7 @@ class EmitterTest extends TestCase {
    * @covers ::publish
    * @covers ::loop
    */
-  public function testSubscribeWithInvalidKey() {
+  public function testSubscribeWithInvalidKey(): void {
     $emitter = $this->connect();
     $channel = "article1/";
     $key = $emitter->keygen(self::MASTER_KEY, $channel, 'r', 10);
@@ -100,7 +103,7 @@ class EmitterTest extends TestCase {
     $receivedMessage = "";
     $receivedTopic = "";
 
-    $emitter->addMessageHandler(function($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic) {
+    $emitter->addMessageHandler(function ($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic): void {
       $receivedMessage = $message;
       $receivedTopic = $topic;
       $emitter->interrupt();
@@ -116,7 +119,7 @@ class EmitterTest extends TestCase {
   /**
    * @covers ::unsubscribe
    */
-  public function testUnsubscribe() {
+  public function testUnsubscribe(): void {
     $emitter = $this->connect();
     $channel = "article1/";
     $key = $emitter->keygen(self::MASTER_KEY, $channel, 'rw', 10);
@@ -125,7 +128,7 @@ class EmitterTest extends TestCase {
     $receivedMessage = "";
     $receivedTopic = "";
 
-    $emitter->addMessageHandler(function($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic) {
+    $emitter->addMessageHandler(function ($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic): void {
       $receivedMessage = $message;
       $receivedTopic = $topic;
       $emitter->interrupt();
@@ -152,7 +155,7 @@ class EmitterTest extends TestCase {
   /**
    * @covers ::removeMessageHandler
    */
-  public function testRemoveMessageHandler() {
+  public function testRemoveMessageHandler(): void {
     $emitter = $this->connect();
     $channel = "article1/";
     $key = $emitter->keygen(self::MASTER_KEY, $channel, 'rw', 10);
@@ -161,7 +164,7 @@ class EmitterTest extends TestCase {
     $receivedMessage = "";
     $receivedTopic = "";
 
-    $handler = function($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic) {
+    $handler = function ($emitter, $topic, $message) use (&$receivedMessage, &$receivedTopic): void {
       $receivedMessage = $message;
       $receivedTopic = $topic;
       $emitter->interrupt();
@@ -180,17 +183,17 @@ class EmitterTest extends TestCase {
    * @covers ::addLoopHandler
    * @covers ::removeLoopHandler
    */
-  public function testLoopHandler() {
+  public function testLoopHandler(): void {
     $emitter = $this->connect();
 
     $ticks = 0;
     $testTicks = 0;
 
-    $testHandler = function() use (&$testTicks) {
+    $testHandler = function () use (&$testTicks): void {
       $testTicks++;
     };
 
-    $mainHandler = function($emitter, $elapsedTime) use (&$ticks, &$testHandler) {
+    $mainHandler = function ($emitter, $elapsedTime) use (&$ticks, &$testHandler): void {
       $ticks++;
 
       if ($ticks === 5) {
@@ -210,7 +213,10 @@ class EmitterTest extends TestCase {
     $this->assertEquals(5, $testTicks);
   }
 
-  public function testPresence() {
+  /**
+   * @covers ::presence
+   */
+  public function testPresence(): void {
     $username = 'my-username';
     $emitter = $this->connect();
     $emitterTwo = $this->connect($username);
@@ -220,7 +226,7 @@ class EmitterTest extends TestCase {
     $actualEvents = [];
 
     $i = 0;
-    $handler = function($emitter, $topic, $message) use (&$i, &$actualEvents) {
+    $handler = function ($emitter, $topic, $message) use (&$i, &$actualEvents): void {
       $i++;
 
       $actualEvents[] = json_decode($message, TRUE);
@@ -240,44 +246,61 @@ class EmitterTest extends TestCase {
 
     $this->assertEquals(3, count($actualEvents));
 
+    $statusTriggered = FALSE;
+    $subscribeTriggered = FALSE;
+    $unsubscribeTriggered = FALSE;
     for ($x = 0; $x < count($actualEvents); $x++) {
-      switch ($x) {
-        case 0:
-          $this->assertEquals('status', $actualEvents[$x]['event']);
+      $event = $actualEvents[$x];
+
+      switch ($event['event']) {
+        case 'status':
+          $statusTriggered = TRUE;
           break;
 
-        case 1:
-          $this->assertEquals('subscribe', $actualEvents[$x]['event']);
-          $this->assertEquals($username, $actualEvents[$x]['who']['username']);
+        case 'subscribe':
+          $subscribeTriggered = TRUE;
+          $this->assertEquals($username, $event['who']['username']);
           break;
 
-        case 2:
-          $this->assertEquals('unsubscribe', $actualEvents[$x]['event']);
-          $this->assertEquals($username, $actualEvents[$x]['who']['username']);
+        case 'unsubscribe':
+          $unsubscribeTriggered = TRUE;
+          $this->assertEquals($username, $event['who']['username']);
           break;
       }
+    }
+
+    if (!$statusTriggered) {
+      $this->fail('Status event not triggered');
+    }
+
+    if (!$subscribeTriggered) {
+      $this->fail('Subscribe event not triggered');
+    }
+
+    if (!$unsubscribeTriggered) {
+      $this->fail('Unsubscribe event not triggered');
     }
   }
 
   /**
    * Publish a message on the first cycle.
-   * 
+   *
    * Loop will be interrupted after $timeout has passed.
-   * 
-   * @param Emitter $emitter 
+   *
+   * @param \Wunderwerk\PhpEmitter\Emitter $emitter
    *   The emitter instance.
-   * @param float $timeout 
+   * @param float $timeout
    *   The timeout in seconds.
-   * @param string $key 
+   * @param string $key
    *   The key.
-   * @param string $channel 
+   * @param string $channel
    *   The channel.
-   * @param string $message 
+   * @param string $message
    *   The message.
    */
   protected function publishOnCycle(Emitter $emitter, float $timeout, string $key, string $channel, string $message): void {
     $published = FALSE;
-    $handler = function(Emitter $emitter, $elapsedTime) use ($published, $timeout, $key, $channel, $message) {
+    $handler = function (Emitter $emitter, $elapsedTime) use ($published, $timeout, $key, $channel, $message): void {
       if (!$published) {
         $emitter->publish($key, $channel, $message, NULL, FALSE);
         $published = TRUE;
@@ -306,8 +329,8 @@ class EmitterTest extends TestCase {
 
   /**
    * Get emitter host.
-   * 
-   * @return string 
+   *
+   * @return string
    *   The emitter host.
    */
   protected function getEmitterHost(): string {
