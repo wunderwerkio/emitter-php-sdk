@@ -10,9 +10,14 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
+
+    services:
+      emitter:
+        image: emitter/server:v3.0
+        env:
+          EMITTER_LICENSE: POwgWDVuaLR56pLgGvba2ySq0rzPARzNJW1MhsfKtu1HIzgQjD16udVj9nuLgQALfvpsmtSHme8L-POJEAE:3
 
     steps:
     - uses: actions/checkout@v3
