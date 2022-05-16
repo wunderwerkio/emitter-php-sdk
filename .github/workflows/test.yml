@@ -41,3 +41,5 @@ jobs:
 
     - name: Run test suite
       run: composer run-script test
+      env:
+        EMITTER_HOST: localhost

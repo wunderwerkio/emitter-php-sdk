@@ -29,7 +29,7 @@ class EmitterTest extends TestCase {
     $emitter = new Emitter();
 
     $this->expectException(\Exception::class);
-    $emitter->connect('emitter', 1234);
+    $emitter->connect($this->getEmitterHost(), 1234);
   }
 
   /**
@@ -299,9 +299,19 @@ class EmitterTest extends TestCase {
   protected function connect(?string $username = NULL): Emitter {
     $emitter = new Emitter();
 
-    $emitter->connect('emitter', 8080, $username);
+    $emitter->connect($this->getEmitterHost(), 8080, $username);
 
     return $emitter;
+  }
+
+  /**
+   * Get emitter host.
+   * 
+   * @return string 
+   *   The emitter host.
+   */
+  protected function getEmitterHost(): string {
+    return getenv('EMITTER_HOST');
   }
 
 }
