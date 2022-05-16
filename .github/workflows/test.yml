@@ -12,6 +12,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container: php:8.0-cli
 
     services:
       emitter:
